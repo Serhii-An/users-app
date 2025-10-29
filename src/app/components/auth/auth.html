@@ -1,0 +1,43 @@
+
+@if (showAnnotation) {
+    <div class="annotation">
+        <button type="button" (click)="showAnnotation = false">Зачинити</button>
+        <p>Додано трьох користувачів із відповідними ролями: admin, editor, user.</p>
+        <p>У всіх пароль: 1.</p>
+        <ul>
+            <li>user може лише переглядати таблицю</li>
+            <li>editor — додавати та редагувати користувачів</li>
+            <li>admin — додавати, редагувати та видаляти користувачів</li>
+        </ul>
+    </div>
+}
+<form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Login</mat-label>
+    <input matInput formControlName="login" />
+    @if(authForm.get('login')?.hasError('required')) {
+        <mat-error>login is required</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Enter your password</mat-label>
+    <input matInput formControlName="password" [type]="hide() ? 'password' : 'text'" />
+    <button
+      matIconButton
+      matSuffix
+      (click)="clickEvent($event)"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hide()"
+    >
+    <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+    @if(authForm.get('password')?.hasError('required')) {
+        <mat-error>password is required</mat-error>
+    }
+  </mat-form-field>
+
+    <button mat-raised-button color="primary" [disabled]="authForm.invalid">
+        Login
+  </button>
+</form>

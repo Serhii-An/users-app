@@ -1,0 +1,7 @@
+<app-header></app-header>
+<main class="container">
+    <router-outlet />
+    @if (!(isLoggedIn$ | async)) {
+        <app-auth></app-auth>
+    }
+</main>

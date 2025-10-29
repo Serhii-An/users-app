@@ -1,0 +1,55 @@
+@use 'variables' as *;
+::ng-deep .form-modal.cdk-overlay-pane {
+  max-height: 80vh;
+
+  form {
+    margin-bottom: 0;
+  }
+}
+
+.no-data-message {
+  font-size: 26px;
+  text-align: center;
+  color: gray;
+}
+
+.mat-mdc-header-cell {
+    text-transform: capitalize;
+}
+
+.controls {
+  display: flex;
+  gap: $base-gap;
+}
+
+.table-holder {
+  width: 100%;
+  overflow-x: auto;
+
+  .controls {
+    gap: 5px;
+    flex-wrap: nowrap;
+  }
+}
+
+@media print {
+  table {
+    border: 1px solid;
+  }
+
+  .mat-sort-header-arrow {
+    display: none !important;
+  }
+
+  .mat-sort-header-container {
+    justify-content: start !important;
+  }
+
+  .mat-mdc-cell.no-print {
+    display: none !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}

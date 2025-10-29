@@ -1,0 +1,105 @@
+<form [formGroup]="addUserForm" (ngSubmit)="onSubmit()" class="form">
+  <div class="fields-row">
+    <mat-form-field appearance="fill">
+      <mat-label>FirstName</mat-label>
+      <input matInput formControlName="firstName" />
+      @if(addUserForm.get('firstName')?.hasError('required')) {
+        <mat-error>FirstName is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Last Name</mat-label>
+      <input matInput formControlName="lastName" />
+    </mat-form-field>
+  </div>
+
+  <div class="fields-row">
+    <mat-form-field appearance="fill">
+      <mat-label>NickName</mat-label>
+      <input matInput formControlName="nickName" />
+
+      @if (addUserForm.get('nickName')?.hasError('nickNameTaken')) {
+        <mat-error>NickName isn`t available</mat-error>
+      }
+
+      @if (addUserForm.get('nickName')?.hasError('required')) {
+        <mat-error>NickName is required</mat-error>
+      }
+    </mat-form-field>
+
+    @if (addUserForm.get('avatar')?.value) {
+      <div class="img-container">
+        <img [src]="previewUrl || addUserForm.get('avatar')?.value" alt="Preview" />
+        <mat-icon class="close-icon" (click)="deleteImg()">close</mat-icon>
+      </div>
+    } @else {
+      <div class="img-upload">
+        <input type="file" formControlName="avatar" (change)="onFileSelected($event)" />
+        @if(showImgError) {
+          <mat-error>File format is not allowed</mat-error>
+        }
+      </div>
+    } 
+  </div>
+
+  <div class="fields-row">
+    <mat-form-field appearance="fill">
+      <mat-label>Phone Number</mat-label>
+      <input matInput formControlName="phoneNumber" class="no-spinner" />
+      @if(addUserForm.get('phoneNumber')?.hasError('pattern')) {
+        <mat-error>Must contain only digits</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" />
+      @if(addUserForm.get('email')?.hasError('email')) {
+        <mat-error>Wrong email format</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="fields-row">
+    <mat-form-field>
+      <mat-label>City</mat-label>
+      <input #cityInput
+            type="text"
+            placeholder="Pick one"
+            aria-label="City"
+            matInput
+            formControlName="city"
+            [matAutocomplete]="auto"
+            >
+            @if (isCitySeaerching) {
+              <mat-spinner diameter="24"></mat-spinner>
+            }
+            @if(showTip) {
+              <mat-hint>{{tipText$ | async}}</mat-hint>
+            }
+
+      <mat-autocomplete #auto="matAutocomplete">
+        @for (option of cityOptions; track $index) {
+          <mat-option [value]="option">{{option}}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Address</mat-label>
+      <input matInput formControlName="address" />
+    </mat-form-field>
+  </div>
+  <div class="controls">
+    <button #submitBtn mat-raised-button color="primary" [disabled]="addUserForm.invalid">
+      {{ isEdit ? 'Apply changes' : 'Add user'}}
+    </button>
+
+    @if (isEdit) {
+      <button type="button" mat-button (click)="onCancel()" color="primary">
+        Cancel
+      </button>
+    }
+  </div>
+</form>

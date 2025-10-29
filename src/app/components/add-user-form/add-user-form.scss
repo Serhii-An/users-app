@@ -1,0 +1,72 @@
+@use 'variables' as *;
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 700px;
+    margin: 0 auto 40px;
+}
+
+.fields-row {
+    width: 100%;
+    display: flex;
+    gap: $base-gap;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+
+    @media (min-width: 768px) {
+        flex-direction: row;
+        mat-form-field {
+            width: calc(50% - #{$base-gap / 2});
+        }
+    }
+}
+
+.controls {
+    display: flex;
+    gap: $base-gap;
+}
+
+.img-upload {
+    display: flex;
+    flex-direction: column;
+    gap: $base-gap;
+    margin: 20px 0;
+}
+
+.img-container {
+    position: relative;
+
+    img {
+        max-width: 150px;
+        max-height: 150px;
+    }
+}
+
+.mat-icon.close-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 16px;
+    color: red;
+    position: absolute;
+    z-index: 100;
+    top: 5px;
+    right: 5%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        background: rgba(0, 0, 0, .03);
+    }
+}
+
+.mat-mdc-progress-spinner {
+    position: absolute;
+    right: 0;
+    top: 15px;
+}

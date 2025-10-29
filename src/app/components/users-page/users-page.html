@@ -1,0 +1,4 @@
+@if ((isAdmin$ |async) || (isEditor$ |async)) {
+    <app-add-user-form class="no-print"></app-add-user-form>
+}
+<app-users-table></app-users-table>

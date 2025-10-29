@@ -1,0 +1,6 @@
+<header>
+    @if (loggedUser$ | async) {
+        <span>You logged as <b>{{ loggedUser$ | async}}</b></span>
+        <a href="#" (click)="onLogout()">Logout</a>
+    }
+</header>

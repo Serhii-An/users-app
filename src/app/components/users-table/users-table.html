@@ -1,0 +1,74 @@
+<div class="controls no-print">
+    <mat-form-field appearance="outline">
+        <mat-label>Search By</mat-label>
+        <mat-select [(value)]="selectedFields" multiple (selectionChange)="applyFilter()">
+            @for(column of searchableColumns; track $index) {
+                <mat-option [value]="column.columnDef">
+                    {{ column.header }}
+                </mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+    <mat-label>Search</mat-label>
+    <input matInput [(ngModel)]="searchValue" (input)="applyFilter()" placeholder="Введіть значення" />
+    </mat-form-field>
+</div>
+
+<div class="table-holder">
+    <table mat-table matSort [dataSource]="dataSource" id="print-section">
+        @for(column of columns; track $index) {
+            <ng-container [matColumnDef]="column.columnDef">
+                <th (click)="onSort(column.columnDef, $event)" [ngClass]="{ 'no-print': column.columnDef === 'icons' }" *matHeaderCellDef mat-sort-header> {{ column.header }} </th>
+                @if (column.columnDef === 'icons') {
+                    <td mat-cell *matCellDef="let user" class="no-print">
+                        <div class="controls">
+                            <button mat-icon-button color="primary" (click)="openModal(user)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            @if (isAdmin$ |async) {
+                                <button mat-icon-button color="warn" (click)="onDelete(user)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            }
+                        </div>
+                    </td>
+                } @else if (column.columnDef === 'avatar') {
+                    <td mat-cell *matCellDef="let user">
+                        @if (user.avatar) {
+                            <img [src]="user.avatar" alt="Avatar" width="50"/>
+                    }
+                    </td>
+                } @else {
+                    <td mat-cell *matCellDef="let user">
+                    {{ user[column.columnDef] }}</td>
+                }
+            </ng-container>
+        }
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    @if (dataSource.data.length === 0) {
+        <p class="no-data-message">There is no data yet</p>
+    }
+</div>
+
+<div class="no-print">
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                    showFirstLastButtons
+                    aria-label="Select page of users">
+    </mat-paginator>
+
+    <div class="controls">
+        <button mat-raised-button color="primary" (click)="exportToPDF()">
+            export to PDF
+        </button>
+
+        <button mat-raised-button color="primary" (click)="exportToExcel()">
+            export to Excel
+        </button>
+
+        <button mat-raised-button color="primary" (click)="print()">Print</button>
+    </div>
+</div>
